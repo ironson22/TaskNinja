@@ -1,0 +1,39 @@
+@model TaskNinja.Models.UserModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+</head>
+<body>
+    <div>
+        <h1>Sign in to Task Ninja</h1>
+        <form asp-action="ProcessLogin">
+            <div class="mb-3">
+                <label asp-for="username" class="form-label">Username</label>
+                <input asp-for="username" class="form-control" />
+                <span asp-validation-for="username" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="password" class="form-label"></label>
+                <input asp-for="password" class="form-control" />
+                <span asp-validation-for="password" class="text-danger"></span>
+            </div>
+            <button type="submit" value="Login" class="btn btn-primary">Sign in</button>
+        </form>
+        <div>
+            @{
+                if (ViewBag.message != null)
+                {
+                    <span>@ViewBag.message</span>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
