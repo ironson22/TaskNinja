@@ -28,7 +28,7 @@ namespace TaskNinja.Services
 		/// Registers a new user and saves the information to the database asynchronously
 		/// </summary>
 		/// <param name="user">New User</param>
-		/// <returns>Status</returns>
+		/// <returns>Status String</returns>
 		public Task<string> RegisterUser(UserModel user);
 
 		/// <summary>
