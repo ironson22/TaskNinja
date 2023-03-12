@@ -53,10 +53,25 @@ namespace TaskNinja.Controllers
             if(ModelState.IsValid)
             {
                 // Wait for registration to complete
-                if(await usersDAO.RegisterUser(user) == UsersDAO.msgSUCCESS) 
+                var Result = await usersDAO.RegisterUser(user);
+                if ( Result == UsersDAO.msgSUCCESS) 
                 {
                     ViewBag.message = "Registration Success!";
                     // Send usermodel to registration success view
+                    return View("Index", user);
+                }
+                // If username taken
+                else if ( Result == UsersDAO.msgUSERNAMETAKEN)
+                {
+                    ViewBag.message = "Registration Failed!: Username Taken";
+                    // Send usermodel back to registration view
+                    return View("Index", user);
+                }
+                // If email taken
+                else if ( Result == UsersDAO.msgEMAILTAKEN )
+                {
+                    ViewBag.message = "Registration Failed!: Email Taken";
+                    // Send usermodel back to registration view
                     return View("Index", user);
                 }
                 // If registration failed
