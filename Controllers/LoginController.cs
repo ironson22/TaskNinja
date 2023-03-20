@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TaskNinja.Models;
 using TaskNinja.Services;
+
+using MongoDB.Bson;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace TaskNinja.Controllers
 {
@@ -38,7 +38,7 @@ namespace TaskNinja.Controllers
         public async Task<IActionResult> ProcessLogin(UserModel user)
         {
             // use DAO to check if credentials are valid
-            if (await usersDAO.Login(user))
+            if ( await usersDAO.Login(user) )
             {
                 //TODO Sprint 2: Redirect to Tasks page and remove ViewBag reference
                 ViewBag.message = "Login Successful!";

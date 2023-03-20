@@ -15,17 +15,21 @@ namespace TaskNinja.Services
     /// </summary>
 	public class UsersDAO : IUsersDAO
 	{
+
         // Task<String> Responses
         public const String msgSUCCESS = "Success";
         public const String msgFAILURE = "Failure";
         public const String msgUSERNAMETAKEN = "Username Taken";
         public const String msgEMAILTAKEN = "Email Taken";
+        public const String msgUSERNOTFOUND = "User Not Found";
 
         // INSERT MONGODB CONNECTION STRING HERE
-        private const string connectionString = "";
+        private string connectionString = Environment.GetEnvironmentVariable("MongoDB ConString");
         private MongoClient mongoClient;
         private IMongoDatabase database;
         private IMongoCollection<BsonDocument> collection;
+
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersDAO"/> class.
@@ -122,7 +126,7 @@ namespace TaskNinja.Services
         /// </summary>
         /// <param name="username">The username to search for.</param>
         /// <returns></returns>
-        public async Task<bool> DoesUserExistByUsername(String username)
+        private async Task<bool> DoesUserExistByUsername(String username)
         {
             // Create filter for paramater username
             var filter = Builders<BsonDocument>.Filter.Eq("username", username);
@@ -136,13 +140,40 @@ namespace TaskNinja.Services
         /// </summary>
         /// <param name="email">The email to search for.</param>
         /// <returns></returns>
-        public async Task<bool> DoesUserExistByEmail(String email)
+        private async Task<bool> DoesUserExistByEmail(String email)
         {
             // Create filter for paramater email
             var filter = Builders<BsonDocument>.Filter.Eq("email", email);
             // Find users using the filter
             var documents = await this.collection.Find(filter).ToListAsync();
             return documents.FirstOrDefault() != null;
+        }
+
+
+        /// <summary>
+        /// Gets the userID using login credentials contained withing the inputed user model.
+        /// <br></br>
+        /// Author(s): Charles Davis
+        /// </summary>
+        /// <param name="user">The user model containing login credentials.</param>
+        /// <returns>string response</returns>
+        public async Task<string> GetUserIDByLogin(UserModel user)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("username", user.username)
+                & Builders<BsonDocument>.Filter.Eq("password", user.password);
+
+            var documents = await collection.Find(filter).ToListAsync();
+
+            // If returned value is null
+            if(documents.FirstOrDefault() == null)
+            {
+                return msgUSERNOTFOUND;
+            }
+
+            // Deserialize Documents
+            var deserializedDocuments = BsonSerializer.Deserialize<UserModel>(documents.FirstOrDefault());
+            // Return userID
+            return deserializedDocuments._id.ToString();
         }
     }
 }
