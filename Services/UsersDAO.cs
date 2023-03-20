@@ -40,9 +40,23 @@ namespace TaskNinja.Services
             this.database = mongoClient.GetDatabase("Task-Ninja");
             this.collection = database.GetCollection<BsonDocument>("User");
         }
-        public Task<UserModel> GetUserByID(string id)
+        /// <summary>
+        /// This method will fetch the user document based on username from the database asynchronously
+        /// <br></br>
+        /// Author(s): Vincent Sanchez
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// A single UserModel Object
+        /// </returns>
+        public async Task<UserModel> GetUserByID(string id)
         {
-            throw new NotImplementedException();
+            var filter = new BsonDocument { { "_id", id } };
+            //Get the document from the collection using filter based on id
+            var documents = await collection.FindOneAsync(filter);
+            // deserialize each document into UserModel
+            var user = documents.Select(x => x.Value).ToList();
+            return user;
         }
 
         /// <summary>
