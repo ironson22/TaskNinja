@@ -40,8 +40,21 @@ namespace TaskNinja.Controllers
             // use DAO to check if credentials are valid
             if ( await usersDAO.Login(user) )
             {
-                //TODO Sprint 2: Redirect to Tasks page and remove ViewBag reference
                 ViewBag.message = "Login Successful!";
+
+                string uid = await usersDAO.GetUserIDByLogin(user);
+                if(uid == UsersDAO.msgUSERNOTFOUND)
+                {
+                    ViewBag.message += " Error: Session Var Not Created<User not found>!";
+                }
+                else
+                {
+                    // Set session uid
+                    UserSessionHandler.SetUID(HttpContext.Session, new ObjectId(uid));
+                    ViewBag.message += " Session Var Created!";
+                }
+
+                //TODO Sprint 2: Redirect to Tasks page and remove ViewBag reference
             }
             else
             {
