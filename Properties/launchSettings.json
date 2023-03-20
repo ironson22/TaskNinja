@@ -1,22 +1,30 @@
 {
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:4013",
+      "sslPort": 44362
+    }
+  },
   "profiles": {
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MongoDB ConString": "mongodb+srv://root:OJnsP80sOoKkm4QD@cluster0.sxsymay.mongodb.net/?retryWrites=true&w=majority"
-      },
-      "applicationUrl": "http://localhost:5001"
+      }
     },
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
+      "applicationUrl": "https://localhost:7283;http://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MongoDB ConString": "mongodb+srv://root:OJnsP80sOoKkm4QD@cluster0.sxsymay.mongodb.net/?retryWrites=true&w=majority"
-      },
-      "applicationUrl": "https://localhost:7283;http://localhost:5001"
+      }
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -24,14 +32,6 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:4013",
-      "sslPort": 44362
     }
   }
 }
